@@ -3,10 +3,13 @@ defmodule Elixirfib do
     Calculate the n-th position of the fibonacci sequence
 
     ## Examples
+    
     iex> Elixirfib.fib(0)
     0
+
     iex> Elixirfib.fib(1)
     1
+
     iex> Elixirfib.fib(-1)
     0
   """
