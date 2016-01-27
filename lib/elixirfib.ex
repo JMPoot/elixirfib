@@ -4,8 +4,7 @@ defmodule Elixirfib do
   @doc ~S"""
   Start the Elixirfib application tree
   """
-  def start(:normal, args) do
-    {:ok, pid} = Elixirfib.Supervisor.start_link()
-    {:ok, pid}
+  def start(:normal, _args) do
+    Elixirfib.Supervisor.start_link()
   end
 end

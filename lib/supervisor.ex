@@ -6,7 +6,8 @@ defmodule Elixirfib.Supervisor do
   end
 
   def init(:ok) do
-    [worker(Elixirfib.Server, [[name: :fib_server]])]
+    name = Application.get_env(:elixirfib, :server_name)
+    [worker(Elixirfib.Server, [[name: {:global, name}]])]
     |> supervise(strategy: :one_for_one)
   end
 end
