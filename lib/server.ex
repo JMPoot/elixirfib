@@ -1,16 +1,34 @@
 defmodule Elixirfib.Server do
-  @name :fib_server
+  use GenServer
 
-  def start do
-    pid = spawn(__MODULE__, :fib, [])
-    :global.register_name(@name, pid)
+  # Client
+
+  def start_link(opts \\ []) do
+    GenServer.start_link(__MODULE__, :ok, opts)
   end
 
-  def fib do
-    receive do
-      {client_pid, n} ->
-        send client_pid, {:result, Elixirfib.fib(n)}
-        fib
+  def fib(server, n) do
+    GenServer.call(server, {:fib, n})
+  end
+
+  # Server (callbacks)
+  def init(:ok) do
+    state = Enum.into([{0, 0}, {1, 1}], HashDict.new)
+    {:ok, state}
+  end
+
+  def handle_call({:fib, n}, _from, state) do
+    {result, new_state} = do_fib(n, state)
+    {:reply, result, new_state}
+  end
+
+  def do_fib(n, cache) do
+    if result = cache[n] do
+      {result, cache}
+    else
+      {val, cache} = do_fib(n - 1, cache)
+      result = val + cache[n - 2]
+      {result, HashDict.put(cache, n, result)}
     end
   end
 end
