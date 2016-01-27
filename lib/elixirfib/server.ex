@@ -2,6 +2,15 @@ defmodule Elixirfib.Server do
   use GenServer
 
   # Client
+  def become_leader do
+    start_link([name: {:global, name}])
+  end
+
+  def leader_pid do
+    :global.whereis_name(name)
+  end
+
+  defp name, do: Application.get_env(:elixirfib, :server_name)
 
   def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
