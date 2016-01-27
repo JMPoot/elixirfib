@@ -1,19 +1,40 @@
 # Elixirfib
+Fibonacci server
 
-**TODO: Add description**
+## Become leader
+
+```bash
+iex --sname server -S mix
+iex(server@local)> Elixirfib.Server.become_leader
+```
+
+## Query server as the client
+
+```bash
+iex --sname client-one -S mix
+iex(client-one@local)> Node.connect(:"server@local")
+iex(client-one@local)> alias Elixirfib.Server
+iex(client-one@local)> Server.fib(Server.leader_pid, 10) # 55
+```
 
 ## Installation
-
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+- Add elixirfib to your list of dependencies in `mix.exs`:
 
-  1. Add elixirfib to your list of dependencies in `mix.exs`:
+     def deps do
 
-        def deps do
-          [{:elixirfib, "~> 0.0.1"}]
-        end
+  ```
+   [{:elixirfib, "~> 0.0.1"}]
+  ```
 
-  2. Ensure elixirfib is started before your application:
+     end
 
-        def application do
-          [applications: [:elixirfib]]
-        end
+- Ensure elixirfib is started before your application:
+
+     def application do
+
+  ```
+   [applications: [:elixirfib]]
+  ```
+
+     end
