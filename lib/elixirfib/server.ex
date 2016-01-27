@@ -6,10 +6,9 @@ defmodule Elixirfib.Server do
     start_link([name: {:global, name}])
   end
 
-  def leader_pid do
-    :global.whereis_name(name)
-  end
-
+  def has_leader?, do: leader_pid != :undefined
+  def leader_pid, do: :global.whereis_name(name)
+  
   defp name, do: Application.get_env(:elixirfib, :server_name)
 
   def start_link(opts \\ []) do
